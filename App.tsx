@@ -12,18 +12,13 @@ import { enableScreens } from 'react-native-screens';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { auth } from './Firebase';
 import Home from './Home';
 import SignIn from './SignIn';
 import Weather from './Weather';
-import { auth } from './Firebase';
+
 
 enableScreens();
-
-type RootStackParamList = {
-  Home: any;
-  SignIn: any;
-  Weather: any;
-};
 
 const Tab = createBottomTabNavigator();
 
@@ -32,20 +27,16 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsAuthenticated(true);
+      }
+    });
+    return unsubscribe;
 
-    if (!auth.currentUser) {
-      // L'utilisateur est connecté
-      setIsAuthenticated(false);
-    } else {
-      // L'utilisateur n'est pas connecté
-      setIsAuthenticated(true);
-    }
   }), [];
 
-
-
   return (
-
     <SafeAreaProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <NavigationContainer>

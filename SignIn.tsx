@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, Button, TextInput, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signIn } from './Conn';
+import { auth } from './Firebase';
 
 const SignIn = () => {
     const navigation = useNavigation();
@@ -11,7 +12,13 @@ const SignIn = () => {
     const handleSubmit = () => {
         if (email != "" && password != "") {
             signIn(email, password);
-            navigation.navigate('Weather' as never);
+
+            const unsubscribe = auth.onAuthStateChanged((user) => {
+                if (user) {
+                    navigation.navigate('Weather' as never);
+                }
+            });
+            return unsubscribe;
         } else {
             Alert.alert("Email and password are required");
         }
