@@ -10,9 +10,12 @@ const SignIn = () => {
     const [password, onChangePassword] = useState('');
 
     const handleSubmit = () => {
+        // Vérification des champs
         if (email != "" && password != "") {
+            // Connexion de l'utilisateur
             signIn(email, password);
 
+            // Redirection vers la page de météo
             const unsubscribe = auth.onAuthStateChanged((user) => {
                 if (user) {
                     navigation.navigate('Weather' as never);

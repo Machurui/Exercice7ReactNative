@@ -9,9 +9,12 @@ const Home = () => {
     const [password, onChangePassword] = useState('');
 
     const handleSubmit = () => {
+        // Vérification des champs
         if (email != "" && password != "") {
+            // Inscription de l'utilisateur
             signUpWithEmailAndPassword(email, password);
 
+            // Redirection vers la page de connexion
             navigation.navigate('SignIn' as never);
         } else {
             Alert.alert("Email and password are required");

@@ -7,7 +7,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { enableScreens } from 'react-native-screens';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -24,11 +23,14 @@ const Tab = createBottomTabNavigator();
 
 
 const App = () => {
+  // Créez un état pour savoir si l'utilisateur est connecté ou non
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    // Vérifiez si l'utilisateur est connecté
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        // Si l'utilisateur est connecté, mettez à jour l'état
         setIsAuthenticated(true);
       }
     });
@@ -42,9 +44,6 @@ const App = () => {
         <NavigationContainer>
           <Tab.Navigator>
             <Tab.Screen name="Home" component={Home} />
-            {/* <Tab.Screen name="SignIn" component={SignIn} /> */}
-            {/* <Tab.Screen name="Weather" component={Weather} /> */}
-
             {isAuthenticated ? (
               // Si l'utilisateur est connecté, affichez l'écran Weather
               <Tab.Screen name="Weather" component={Weather} />
@@ -52,7 +51,6 @@ const App = () => {
               // Sinon, affichez l'écran de connexion
               <Tab.Screen name="SignIn" component={SignIn} />
             )}
-
           </Tab.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>
